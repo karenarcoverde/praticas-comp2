@@ -1,0 +1,235 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.2
+date	2018.10.15.18.32.45;	author karen.arcoverde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2018.10.13.19.46.41;	author karen.arcoverde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@*** empty log message ***
+@
+text
+@/*
+ * Universidade Federal do Rio de Janeiro
+ * Escola Politecnica
+ * Departamento de Eletronica e de Computacao
+ * EEL270 - Computacao II - Turma 2018/2
+ * Prof. Marcelo Luiz Drumond Lanza
+ * Autora: Karen dos Anjos Arcoverde
+ *
+ * $Author: karen.arcoverde $
+ * $Date: 2018/10/13 19:46:41 $
+ * $Log: aula0902.c,v $
+ * Revision 1.1  2018/10/13 19:46:41  karen.arcoverde
+ * Initial revision
+ *
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+#include "aula0901.h"
+
+
+#define NUMERO_ARGUMENTOS                                        3
+#define NUMERO_ARGUMENTOS_INVALIDO                               1
+#define ABRIR_ARQUIVO_INVALIDO                                   2
+#define ESCREVER_ARQUIVO_INVALIDO                                3
+#define ALOCAR_MEMORIA_INVALIDO                                  5
+#define OK                                                       0
+
+
+
+int
+main (int argc, char *argv[])
+{
+	unsigned indice = 0;
+	FILE *leitura, *escrita;
+	byte aux;
+	byte *entrada;
+	char  *saida;
+
+
+	if (argc != NUMERO_ARGUMENTOS)
+	{
+		printf ("Uso %s <nome do arquivo>  <nome do arquivo codificado>\n", argv [0]);
+		exit (NUMERO_ARGUMENTOS_INVALIDO); 
+	}
+	
+	if ((leitura = fopen (argv [1], "r")) == NULL)
+	{
+		printf ("Erro ao abrir o arquivo %s\n", argv[1]);
+		printf ("Erro (#%i) : %s\n", errno, strerror (errno));
+		exit (ABRIR_ARQUIVO_INVALIDO);
+	}
+
+	if ((escrita = fopen (argv [2], "w")) == NULL)
+	{
+		printf ("Erro ao abrir o arquivo %s\n", argv[2]);
+		printf ("Erro (#%i) : %s\n", errno, strerror (errno));
+		fclose (leitura);
+		exit (ABRIR_ARQUIVO_INVALIDO);
+	}
+
+
+	while (fread (&aux, 1, 1, leitura) > 0)
+	{
+		if (aux != '\n' && aux != EOS) 
+			indice ++;
+	}
+
+	fclose (leitura);
+
+	if ((leitura = fopen (argv[1], "r")) == NULL)
+	{
+		printf ("Erro ao abrir o arquivo %s\n", argv [1]);
+		printf ("Erro (#%i) : %s \n", errno, strerror (errno));
+		exit (ABRIR_ARQUIVO_INVALIDO);
+	}
+
+	if (!(entrada = malloc (1*indice)))
+	{
+		printf ("Erro de memoria\n");
+		exit (ALOCAR_MEMORIA_INVALIDO);
+	}
+
+	indice = 0;
+
+	while (fread (&aux, 1, 1, leitura) > 0)
+	{
+		if (aux != '\n' && aux != EOS)
+		{
+			entrada [indice] = aux;
+			indice ++;
+		}
+	}
+
+
+	if (!(saida = malloc (((indice/3) *4) + ((indice % 3) * 4))))
+	{
+		printf ("Erro de memoria\n");
+		exit (ALOCAR_MEMORIA_INVALIDO);
+	}
+	
+
+	CodificarBase64 (entrada, indice, saida);
+	
+
+	fprintf (escrita, "%s", saida);
+	if (ferror (escrita)) 
+	{
+		printf ("Erro ao escrever no arquivo %s\n", argv[2]);
+		printf ("Erro (#%i) : %s \n", errno, strerror (errno));
+		fclose (leitura);
+		fclose (escrita);
+		exit (ESCREVER_ARQUIVO_INVALIDO);
+	}
+
+	fclose (leitura);
+	fclose (escrita);
+	free (entrada);
+	free (saida);
+
+	return OK;
+
+}
+/*$RCSfile: aula0902.c,v $*/
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d9 6
+a14 3
+ * $Author$
+ * $Date$
+ * $Log$
+a19 1
+#include <ctype.h>
+d26 3
+a28 3
+#define ERRO_ABRIR_ARQUIVO                                       2
+#define ERRO_ESCREVER_ARQUIVO                                    3
+#define ERRO_ALOCAR_MEMORIA                                      4
+d38 1
+a38 1
+	byte auxiliar;
+d49 1
+a49 1
+	if (!(leitura = fopen (argv [1], "r")))
+d51 1
+a51 1
+		printf ("Erro ao abrir o arquivo \"%s\"\n", argv[1]);
+d53 1
+a53 1
+		exit (ERRO_ABRIR_ARQUIVO);
+d56 1
+a56 1
+	if (!(escrita = fopen (argv [2], "w")))
+d58 1
+a58 1
+		printf ("Erro ao abrir o arquivo \'%s\"\n", argv[2]);
+d61 1
+a61 1
+		exit (ERRO_ABRIR_ARQUIVO);
+d65 1
+a65 1
+	while (fread (&auxiliar, 1, 1, leitura) > 0)
+d67 1
+a67 1
+		if (auxiliar != '\n' && auxiliar != EOS) 
+d73 1
+a73 1
+	if (!(leitura = fopen (argv[1], "r")))
+d75 1
+a75 1
+		printf ("Erro ao abrir o arquivo \"%s\"\n", argv [1]);
+d77 1
+a77 1
+		exit (ERRO_ABRIR_ARQUIVO);
+d83 1
+a83 1
+		exit (ERRO_ALOCAR_MEMORIA);
+d88 1
+a88 1
+	while (fread (&auxiliar, 1, 1, leitura) > 0)
+d90 1
+a90 1
+		if (auxiliar != '\n' && auxiliar != EOS)
+d92 1
+a92 1
+			entrada [indice] = auxiliar;
+d101 1
+a101 1
+		exit (ERRO_ALOCAR_MEMORIA);
+d111 1
+a111 1
+		printf ("Erro ao escrever no arquivo \"%s\n", argv[2]);
+d115 1
+a115 1
+		exit (ERRO_ESCREVER_ARQUIVO);
+d126 1
+a126 1
+/*$RCSfile$*/
+@

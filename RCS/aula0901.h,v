@@ -1,0 +1,107 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.2
+date	2018.10.15.18.32.29;	author karen.arcoverde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2018.10.13.19.46.24;	author karen.arcoverde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@*** empty log message ***
+@
+text
+@/*
+ * Universidade Federal do Rio de Janeiro
+ * Escola Politecnica
+ * Departamento de Eletronica e de Computacao
+ * EEL270 - Computacao II - Turma 2018/2
+ * Prof. Marcelo Luiz Drumond Lanza
+ * Autora: Karen dos Anjos Arcoverde
+ *
+ * $Author: karen.arcoverde $
+ * $Date: 2018/10/13 19:46:24 $
+ * $Log: aula0901.h,v $
+ * Revision 1.1  2018/10/13 19:46:24  karen.arcoverde
+ * Initial revision
+ *
+ */
+
+
+
+#ifndef _AULA_0901_ 
+#define _AULA_0901_ "@@(#)aula0901.h $Revision: 1.1 $"
+
+ 
+#define TABELA_BASE_64  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"                   
+#define COMPRIMENTO_MAXIMO                                                                76
+#define EOS                                                                              '\0'
+
+
+typedef unsigned char byte;
+
+typedef enum
+{
+	ok,
+	valorInvalido,
+	ponteiroNulo
+ 
+} tipoErros;
+
+
+
+
+tipoErros 
+CodificarBase64 (byte *entrada, unsigned numeroBytes, char *saida);
+
+
+tipoErros
+DecodificarBase64 (char *entrada, byte *saida, unsigned *numeroBytes);
+
+
+
+#endif 
+
+/*$RCSfile: aula0901.h,v $*/
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d9 6
+a14 3
+ * $Author$
+ * $Date$
+ * $Log$
+d20 1
+a20 1
+#define _AULA_0901_ "@@(#)aula0901.h $Revision$"
+d23 1
+a23 1
+#define CONJUNTO_BASE_64  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"                   
+d33 2
+a34 2
+	argumentoInvalido,
+	vetorNulo
+d52 1
+a52 1
+/*$RCSfile$*/
+@

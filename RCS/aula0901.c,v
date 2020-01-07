@@ -1,0 +1,342 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.2
+date	2018.10.15.18.32.20;	author karen.arcoverde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2018.10.13.19.46.34;	author karen.arcoverde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@*** empty log message ***
+@
+text
+@/*
+ * Universidade Federal do Rio de Janeiro
+ * Escola Politecnica
+ * Departamento de Eletronica e de Computacao
+ * EEL270 - Computacao II - Turma 2018/2
+ * Prof. Marcelo Luiz Drumond Lanza
+ * Autora: Karen dos Anjos Arcoverde
+ *
+ * $Author: karen.arcoverde $
+ * $Date: 2018/10/13 19:46:34 $
+ * $Log: aula0901.c,v $
+ * Revision 1.1  2018/10/13 19:46:34  karen.arcoverde
+ * Initial revision
+ *
+ */
+
+
+
+#include <string.h>
+#include "aula0901.h"
+
+
+tipoErros 
+CodificarBase64 (byte *entrada, unsigned numeroBytes, char *saida)
+{
+	unsigned indiceSaida = 0;
+	unsigned indiceEntrada = 0;
+	unsigned indice = 0;
+
+		
+
+	if (!entrada || !saida)
+		return ponteiroNulo;	
+
+	for (indice = 0; indice < numeroBytes; indice++)
+		if (entrada[indice] < 32 || entrada[indice] > 127)
+			return valorInvalido;
+
+
+	while (numeroBytes >= 3)
+	{
+		saida [indiceSaida] = TABELA_BASE_64 [(entrada [indiceEntrada] >> 2) & (0x3F)];
+		
+		saida [indiceSaida + 1] = TABELA_BASE_64 [(entrada [indiceEntrada] << 4 | entrada [indiceEntrada + 1] >> 4) & (0x3F)]; 	  	
+		
+		saida [indiceSaida + 2] = TABELA_BASE_64 [(entrada [indiceEntrada + 1] << 2 | entrada [indiceEntrada + 2] >> 6) & (0x3F)];     		
+
+		saida [indiceSaida + 3] = TABELA_BASE_64 [(entrada [indiceEntrada + 2]) & (0x3F)];  
+
+
+		indiceSaida += 4; 
+
+		
+		if (indiceSaida % COMPRIMENTO_MAXIMO == 0)	
+		{
+			saida [indiceSaida] = '\r';		
+			saida [indiceSaida + 1] = '\n';
+			indiceSaida += 2;
+		}
+	
+
+
+		indiceEntrada += 3;
+		numeroBytes -= 3;
+
+	}
+	
+
+
+	if (numeroBytes == 2)
+	{	
+		saida [indiceSaida] = TABELA_BASE_64 [(entrada [indiceEntrada] >> 2) & (0x3F)];
+					
+		saida [indiceSaida + 1] = TABELA_BASE_64 [(entrada [indiceEntrada] << 4 | entrada [indiceEntrada + 1] >> 4) & (0x3F)];
+		
+		saida [indiceSaida + 2] = TABELA_BASE_64 [(entrada [indiceEntrada + 1] << 2) & (0x3C)];
+
+		saida [indiceSaida + 3] = '=';
+		
+
+		indiceSaida += 4;
+
+
+		if (indiceSaida % COMPRIMENTO_MAXIMO == 0)
+		{
+			saida [indiceSaida] = '\r';
+			saida [indiceSaida + 1] = '\n';	
+			indiceSaida += 2;
+		}
+
+
+		indiceEntrada += 2;
+	}
+
+
+
+	if (numeroBytes == 1)
+	{
+
+		saida [indiceSaida] = TABELA_BASE_64 [(entrada [indiceEntrada] >> 2) & (0x3F)];
+		
+		saida [indiceSaida + 1] = TABELA_BASE_64 [(entrada [indiceEntrada] << 4 & (0x30))];
+
+		saida [indiceSaida + 2] = '=';
+
+		saida [indiceSaida + 3] = '=';
+		
+
+
+		indiceSaida += 4;
+
+
+
+		if (indiceSaida % COMPRIMENTO_MAXIMO == 0)
+		{
+			saida [indiceSaida] = '\r';
+			saida [indiceSaida + 1] = '\n';
+			indiceSaida += 2;
+		}
+
+		
+
+
+		indiceEntrada += 1;
+
+	}
+
+	saida [indiceSaida] = EOS;
+	indiceSaida += 1; 
+
+
+
+	return ok;
+
+
+}
+
+tipoErros
+EscolheIndiceBase64 (char number)
+{
+	unsigned indice;
+
+	for (indice = 0; indice < strlen (TABELA_BASE_64); indice++)
+		if (number == TABELA_BASE_64 [indice])
+			return indice;
+	return '\0';
+
+}
+
+
+tipoErros
+DecodificarBase64 (char *entrada, byte *saida, unsigned *numeroBytes)
+{
+	unsigned valor_global = strlen (entrada);
+	unsigned indiceSaida = 0;
+	unsigned indiceEntrada = 0;
+	unsigned maximo = 0;
+
+	
+	if (entrada [valor_global - 1] == '=')
+		maximo = 4;
+
+	while (valor_global > maximo)
+	{
+		if ((indiceEntrada % COMPRIMENTO_MAXIMO) == 0 && indiceEntrada != 0)
+			indiceEntrada += 2; 
+
+		saida [indiceSaida] = (byte) ((EscolheIndiceBase64 (entrada [indiceEntrada] << 2)) & (0xFC)) | 	((EscolheIndiceBase64 (entrada [indiceEntrada + 1] >> 4) & (0x03) ));
+
+		saida [indiceSaida + 1] = (byte) (EscolheIndiceBase64 (entrada [indiceEntrada + 1]) << 4 | ((EscolheIndiceBase64 (entrada [indiceEntrada + 2] << 2) >> 4)) );
+
+		saida [indiceSaida + 2] = (byte)  (EscolheIndiceBase64 (entrada [indiceEntrada + 2]) << 6 | EscolheIndiceBase64 (entrada [indiceEntrada + 3]));
+	
+
+		indiceSaida += 3;
+		indiceEntrada += 4;
+		if (indiceEntrada % 82 == 0)
+			valor_global -= 2;
+
+		valor_global -= 4;
+	}
+
+
+
+	if (maximo == 4)
+	{
+		if (entrada [strlen(entrada) - 2] == '=')
+		{	
+			if ((indiceEntrada % COMPRIMENTO_MAXIMO) == 0 && indiceEntrada != 0)
+				indiceEntrada += 2;
+
+			saida [indiceSaida] = (byte) (((EscolheIndiceBase64 (entrada [indiceEntrada]) << 2) & (0xFC)) | ((EscolheIndiceBase64 (entrada [indiceEntrada + 1]) >> 4) & (0x03)));
+
+			indiceSaida ++;
+		}
+
+		else
+		{
+			if ((indiceEntrada % COMPRIMENTO_MAXIMO) == 0 && indiceEntrada != 0)
+				indiceEntrada += 2;
+
+			saida [indiceSaida] = (byte) (((EscolheIndiceBase64 (entrada [indiceEntrada]) << 2) & (0xFC)) | ((EscolheIndiceBase64 (entrada [indiceEntrada + 1]) >> 4) & (0x03)));
+
+			saida [indiceSaida + 1] = (byte) (EscolheIndiceBase64 (entrada [indiceEntrada + 1]) << 4 | ((EscolheIndiceBase64 (entrada [indiceEntrada + 2]) << 2) >> 4));
+
+			indiceSaida += 2;
+		}
+
+
+
+
+	}	
+	*numeroBytes = indiceSaida;
+
+	return ok;
+}
+/*$RCSfile: aula0901.c,v $*/
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d9 6
+a14 3
+ * $Author$
+ * $Date$
+ * $Log$
+d33 1
+a33 1
+		return vetorNulo;	
+d37 1
+a37 1
+			return argumentoInvalido;
+d42 1
+a42 1
+		saida [indiceSaida] = CONJUNTO_BASE_64 [(entrada [indiceEntrada] >> 2) & (0x3F)];
+d44 1
+a44 1
+		saida [indiceSaida + 1] = CONJUNTO_BASE_64 [(entrada [indiceEntrada] << 4 | entrada [indiceEntrada + 1] >> 4) & (0x3F)]; 	  	
+d46 1
+a46 1
+		saida [indiceSaida + 2] = CONJUNTO_BASE_64 [(entrada [indiceEntrada + 1] << 2 | entrada [indiceEntrada + 2] >> 6) & (0x3F)];     		
+d48 1
+a48 1
+		saida [indiceSaida + 3] = CONJUNTO_BASE_64 [(entrada [indiceEntrada + 2]) & (0x3F)];  
+d72 1
+a72 1
+		saida [indiceSaida] = CONJUNTO_BASE_64 [(entrada [indiceEntrada] >> 2) & (0x3F)];
+d74 1
+a74 1
+		saida [indiceSaida + 1] = CONJUNTO_BASE_64 [(entrada [indiceEntrada] << 4 | entrada [indiceEntrada + 1] >> 4) & (0x3F)];
+d76 1
+a76 1
+		saida [indiceSaida + 2] = CONJUNTO_BASE_64 [(entrada [indiceEntrada + 1] << 2) & (0x3C)];
+d100 1
+a100 1
+		saida [indiceSaida] = CONJUNTO_BASE_64 [(entrada [indiceEntrada] >> 2) & (0x3F)];
+d102 1
+a102 1
+		saida [indiceSaida + 1] = CONJUNTO_BASE_64 [(entrada [indiceEntrada] << 4 & (0x30))];
+d139 1
+a139 1
+PegarIndiceBase64 (char numero)
+d143 2
+a144 2
+	for (indice = 0; indice < strlen (CONJUNTO_BASE_64); indice++)
+		if (numero == CONJUNTO_BASE_64 [indice])
+d154 1
+a154 1
+	unsigned total = strlen (entrada);
+d157 1
+a157 1
+	unsigned limite = 0;
+d160 2
+a161 2
+	if (entrada [total - 1] == '=')
+		limite = 4;
+d163 1
+a163 1
+	while (total > limite)
+d168 1
+a168 1
+		saida [indiceSaida] = (byte) ((PegarIndiceBase64 (entrada [indiceEntrada] << 2)) & (0xFC)) | 	((PegarIndiceBase64 (entrada [indiceEntrada + 1] >> 4) & (0x03) ));
+d170 1
+a170 1
+		saida [indiceSaida + 1] = (byte) (PegarIndiceBase64 (entrada [indiceEntrada + 1]) << 4 | ((PegarIndiceBase64 (entrada [indiceEntrada + 2] << 2) >> 4)) );
+d172 1
+a172 1
+		saida [indiceSaida + 2] = (byte)  (PegarIndiceBase64 (entrada [indiceEntrada + 2]) << 6 | PegarIndiceBase64 (entrada [indiceEntrada + 3]));
+d178 1
+a178 1
+			total -= 2;
+d180 1
+a180 1
+		total -= 4;
+d185 1
+a185 1
+	if (limite == 4)
+d192 1
+a192 1
+			saida [indiceSaida] = (byte) (((PegarIndiceBase64 (entrada [indiceEntrada]) << 2) & (0xFC)) | ((PegarIndiceBase64 (entrada [indiceEntrada + 1]) >> 4) & (0x03)));
+d202 1
+a202 1
+			saida [indiceSaida] = (byte) (((PegarIndiceBase64 (entrada [indiceEntrada]) << 2) & (0xFC)) | ((PegarIndiceBase64 (entrada [indiceEntrada + 1]) >> 4) & (0x03)));
+d204 1
+a204 1
+			saida [indiceSaida + 1] = (byte) (PegarIndiceBase64 (entrada [indiceEntrada + 1]) << 4 | ((PegarIndiceBase64 (entrada [indiceEntrada + 2]) << 2) >> 4));
+d217 1
+a217 1
+/*$RCSfile$*/
+@

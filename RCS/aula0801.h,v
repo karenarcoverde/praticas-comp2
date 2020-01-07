@@ -1,0 +1,96 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.2
+date	2018.10.06.00.00.23;	author karen.arcoverde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2018.10.05.19.36.22;	author karen.arcoverde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@mudanca de falso = 1
+@
+text
+@/*
+ * Universidade Federal do Rio de Janeiro
+ * Escola Politecnica
+ * Departamento de Eletronica e de Computacao
+ * EEL270 - Computacao II - Turma 2018/2
+ * Prof. Marcelo Luiz Drumond Lanza
+ * Autora: Karen dos Anjos Arcoverde
+ *
+ * $Author: karen.arcoverde $
+ * $Date: 2018/10/05 19:36:22 $
+ * $Log: aula0801.h,v $
+ * Revision 1.1  2018/10/05 19:36:22  karen.arcoverde
+ * Initial revision
+ *
+ */
+
+
+
+
+#ifndef _AULA0801_ 
+#define _AULA0801_ "@@(#)aula0801.h $Revision: 1.1 $" 
+ 
+#define NUMERO_DIGITOS                               10
+
+
+
+typedef unsigned char byte;
+typedef enum {falso, verdadeiro} boolean;
+
+byte
+GerarDigitoVerificadorPisPasep (byte PisPasep [NUMERO_DIGITOS]); 
+
+
+boolean
+ValidarPisPasep (byte PisPasep[NUMERO_DIGITOS + 1]); 
+
+
+
+
+
+
+#endif
+
+
+/*$RCSfile: aula0801.h,v $*/
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d9 6
+a14 3
+ * $Author$
+ * $Date$
+ * $Log$
+d21 1
+a21 1
+#define _AULA0801_ "@@(#)aula0801.h $Revision$" 
+d28 1
+a28 1
+typedef enum {verdadeiro, falso} boolean;
+d45 1
+a45 1
+/*$RCSfile$*/
+@

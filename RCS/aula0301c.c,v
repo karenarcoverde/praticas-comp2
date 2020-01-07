@@ -1,0 +1,134 @@
+head	1.3;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.3
+date	2018.08.28.23.39.35;	author karen.arcoverde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2018.08.28.23.34.33;	author karen.arcoverde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2018.08.28.23.23.34;	author karen.arcoverde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@*** empty log message ***
+@
+text
+@/*
+ * Universidade Federal do Rio de Janeiro
+ * Escola Politecnica
+ * Departamento de Eletronica e de Computacao
+ * EEL270 - Computacao II - Turma 2018/2
+ * Prof. Marcelo Luiz Drumond Lanza
+ * Autora: Karen dos Anjos Arcoverde
+ *
+ * $Author: karen.arcoverde $
+ * $Date: 2018/08/28 23:34:33 $
+ * $Log: aula0301c.c,v $
+ * Revision 1.2  2018/08/28 23:34:33  karen.arcoverde
+ * *** empty log message ***
+ *
+ * Revision 1.1  2018/08/28 23:23:34  karen.arcoverde
+ * Initial revision
+ *
+ * Revision 1.2  2018/08/28 23:17:27  karen.arcoverde
+ * *** empty log message ***
+ *
+ * Revision 1.1  2018/08/28 22:37:37  karen.arcoverde
+ * Initial revision
+ *
+ * Revision 1.1  2018/08/28 22:32:55  karen.arcoverde
+ * Initial revision
+ *
+ */
+
+#include "aula0301.h" 
+
+ull
+CalcularTermoSerieFibonacci (unsigned short numero)
+{
+	ull fibonacci, fibo1, fibo2;
+	unsigned short indice;
+
+	fibo1 = 0;
+	fibo2 = 1;
+
+
+
+	if (numero <= 1)
+		return numero;
+
+
+	for (indice = 0; indice <= numero-2; indice++)
+	{
+		fibonacci = fibo1 + fibo2;
+		fibo1 = fibo2;
+		fibo2 = fibonacci;
+	}
+	
+	
+	
+	return fibonacci;
+
+}
+
+
+
+/*$RCSfile: aula0301c.c,v $*/
+
+@
+
+
+1.2
+log
+@*** empty log message ***
+@
+text
+@d10 1
+a10 1
+ * $Date: 2018/08/28 23:23:34 $
+d12 3
+d35 1
+a35 1
+	unsigned short indice = 0;
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d10 5
+a14 2
+ * $Date: 2018/08/28 23:17:27 $
+ * $Log: aula0301b.c,v $
+d42 2
+a43 1
+	do
+d48 2
+a49 4
+		indice++;
+
+	}	
+	while (indice <= numero-2);
+d58 1
+a58 1
+/*$RCSfile: aula0301b.c,v $*/
+@

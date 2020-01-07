@@ -1,0 +1,47 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.1
+date	2018.09.12.03.05.00;	author karen.arcoverde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@/*
+ * Universidade Federal do Rio de Janeiro
+ * Escola Politecnica
+ * Departamento de Eletronica e de Computacao
+ * EEL270 - Computacao II - Turma 2018/2
+ * Prof. Marcelo Luiz Drumond Lanza
+ * Autora: Karen dos Anjos Arcoverde
+ *
+ * $Author$
+ * $Date$
+ * $Log$
+ */
+
+#ifndef _AULA0501_
+#define _AULA0501_ "@@(#)aula0501.h $Revision$"
+
+float
+CalcularSerieHarmonicaAlternada (unsigned long int);
+
+#endif 
+
+
+/*$RCSfile$*/
+
+@

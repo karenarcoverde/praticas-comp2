@@ -1,0 +1,52 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.1
+date	2018.08.28.22.32.47;	author karen.arcoverde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@/*
+ * Universidade Federal do Rio de Janeiro
+ * Escola Politecnica
+ * Departamento de Eletronica e de Computacao
+ * EEL270 - Computacao II - Turma 2018/2
+ * Prof. Marcelo Luiz Drumond Lanza
+ * Autora: Karen dos Anjos Arcoverde
+ *
+ * $Author$
+ * $Date$
+ * $Log$
+ */
+
+#ifndef _AULA0301_
+#define _AULA0301_ "@@(#)aula0301.h $Revision$"
+
+typedef unsigned long long ull;
+
+
+ull
+CalcularTermoSerieFibonacci (unsigned short);
+
+#endif
+
+
+
+
+/*$RCSfile$*/
+
+@

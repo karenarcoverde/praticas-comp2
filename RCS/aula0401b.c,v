@@ -1,0 +1,113 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.2
+date	2018.09.05.19.59.12;	author karen.arcoverde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2018.09.05.19.57.58;	author karen.arcoverde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@*** empty log message ***
+@
+text
+@/*
+ * Universidade Federal do Rio de Janeiro
+ * Escola Politecnica
+ * Departamento de Eletronica e de Computacao
+ * EEL270 - Computacao II - Turma 2018/2
+ * Prof. Marcelo Luiz Drumond Lanza
+ * Autora: Karen dos Anjos Arcoverde
+ *
+ * $Author: karen.arcoverde $
+ * $Date: 2018/09/05 19:57:58 $
+ * $Log: aula0401b.c,v $
+ * Revision 1.1  2018/09/05 19:57:58  karen.arcoverde
+ * Initial revision
+ *
+ */
+
+
+
+#include <math.h>
+#include "aula0401.h"
+
+
+long double
+CalcularExponencial (double base, int expoente)
+{
+	double  auxiliar;
+	auxiliar = base;
+
+
+	if (base == 0 && expoente < 0)
+		return (INFINITY);
+
+
+	if (expoente == 0)
+		return 1;
+
+	if (expoente < 0)
+	{
+		if (expoente < -1)
+			do
+			{
+				base *= auxiliar;
+				expoente++;
+			}
+			while (expoente != -1);
+			
+		return 1/base;
+	}
+
+	if (expoente > 1)
+		do
+		{
+			base *= auxiliar;
+			expoente--;
+		}
+		while (expoente != 1);
+	
+	
+	return base;
+
+}
+		
+
+
+/*$RCSfile: aula0401b.c,v $*/
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d9 6
+a14 3
+ * $Author$
+ * $Date$
+ * $Log$
+d26 1
+a26 1
+	float auxiliar;
+d65 1
+a65 1
+/*$RCSfile$*/
+@
